@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}My Progress - STEM Learning Platform{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <h1 class="display-4 fw-bold text-dark">
+                <i class="fas fa-chart-line me-3"></i>My Learning Progress
+            </h1>
+        </div>
+    </div>
+    
+    {% if subjects %}
+    <div class="row">
+        {% for subject_name, progress_list in subjects.items %}
+        <div class="col-lg-6 mb-4">
+            <div class="card card-crimson">
+                <div class="card-header">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-book me-2"></i>{{ subject_name }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for progress in progress_list %}
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="fw-bold mb-0">{{ progress.topic }}</h6>
+                            <span class="badge bg-primary">{{ progress.completion_percentage|floatformat:0 }}%</span>
+                        </div>
+                        <div class="progress mb-2" style="height: 8px;">
+                            <div class="progress-bar progress-bar-crimson" 
+                                 style="width: {{ progress.completion_percentage }}%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between text-muted small">
+                            <span>{{ progress.completed_lessons }}/{{ progress.total_lessons }} lessons</span>
+                            <span>Score: {{ progress.score|floatformat:1 }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-crimson">
+                <div class="card-body text-center p-5">
+                    <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                    <h4 class="fw-bold">No Progress Yet</h4>
+                    <p class="text-muted mb-4">Start learning to see your progress here!</p>
+                    <a href="{% url 'stem:subject_list' %}" class="btn btn-crimson">
+                        <i class="fas fa-book me-2"></i>Start Learning
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card card-crimson">
+                <div class="card-header">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-trophy me-2"></i>Achievements
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3 text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <h6 class="fw-bold">Lessons Completed</h6>
+                            <p class="text-muted">{{ total_progress|length }}</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h6 class="fw-bold">Average Score</h6>
+                            <p class="text-muted">
+                                {% if total_progress %}
+                                    {% widthratio total_progress|length 1 1 as total_count %}
+                                    {% for progress in total_progress %}
+                                        {% if forloop.last %}
+                                            {{ progress.score|floatformat:1 }}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    0.0
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h6 class="fw-bold">Study Streak</h6>
+                            <p class="text-muted">0 days</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="feature-icon">
+                                <i class="fas fa-medal"></i>
+                            </div>
+                            <h6 class="fw-bold">Badges Earned</h6>
+                            <p class="text-muted">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

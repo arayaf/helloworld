@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Quiz: {{ quiz.question|truncatewords:5 }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="quiz-container">
+                <div class="mb-4">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'stem:subject_list' %}">Subjects</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'stem:subject_detail' quiz.lesson.topic.subject.pk %}">{{ quiz.lesson.topic.subject.name }}</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'stem:topic_detail' quiz.lesson.topic.pk %}">{{ quiz.lesson.topic.title }}</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'stem:lesson_detail' quiz.lesson.pk %}">{{ quiz.lesson.title }}</a></li>
+                            <li class="breadcrumb-item active">Quiz</li>
+                        </ol>
+                    </nav>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="fw-bold">Quiz Question</h2>
+                    <span class="badge bg-primary">{{ quiz.points }} point{{ quiz.points|pluralize }}</span>
+                </div>
+                
+                <div class="card card-crimson mb-4">
+                    <div class="card-body p-4">
+                        <h4 class="fw-bold mb-4">{{ quiz.question }}</h4>
+                        
+                        <form method="post" data-quiz="{{ quiz.pk }}">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            
+                            <div class="d-flex gap-3 mt-4">
+                                <button type="submit" class="btn btn-crimson">
+                                    <i class="fas fa-paper-plane me-2"></i>Submit Answer
+                                </button>
+                                <a href="{% url 'stem:lesson_detail' quiz.lesson.pk %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Lesson
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                {% if quiz.explanation %}
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h5 class="fw-bold mb-0">
+                            <i class="fas fa-lightbulb me-2"></i>Hint
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0">{{ quiz.explanation }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/custom.js' %}"></script>
+{% endblock %}

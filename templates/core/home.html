@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - STEM Learning Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="hero-title">Master STEM Fundamentals</h1>
+                <p class="hero-subtitle">
+                    Comprehensive learning platform designed specifically for first-year engineering students. 
+                    Build strong foundations in Mathematics, Physics, Chemistry, and more.
+                </p>
+                {% if not user.is_authenticated %}
+                    <div class="mt-4">
+                        <a href="{% url 'account_signup' %}" class="btn btn-light btn-lg me-3">
+                            <i class="fas fa-rocket me-2"></i>Get Started
+                        </a>
+                        <a href="{% url 'stem:subject_list' %}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-book me-2"></i>Explore Subjects
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="mt-4">
+                        <a href="{% url 'stem:subject_list' %}" class="btn btn-light btn-lg me-3">
+                            <i class="fas fa-book me-2"></i>Continue Learning
+                        </a>
+                        <a href="{% url 'users:progress' %}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-chart-line me-2"></i>View Progress
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-atom" style="font-size: 15rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-4 fw-bold text-dark">Why Choose Our Platform?</h2>
+                <p class="lead text-muted">Designed specifically for engineering students</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card card-crimson h-100 text-center p-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h4 class="fw-bold">Comprehensive Curriculum</h4>
+                    <p class="text-muted">
+                        Cover all essential STEM subjects with structured lessons, 
+                        examples, and interactive exercises.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card card-crimson h-100 text-center p-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4 class="fw-bold">Track Your Progress</h4>
+                    <p class="text-muted">
+                        Monitor your learning journey with detailed progress tracking 
+                        and personalized recommendations.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card card-crimson h-100 text-center p-4">
+                    <div class="col-md-4">
+                <div class="card card-crimson h-100 text-center p-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4 class="fw-bold">Study Groups</h4>
+                    <p class="text-muted">
+                        Collaborate with peers in study groups, 
+                        share knowledge, and learn together.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card card-crimson h-100 text-center p-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h4 class="fw-bold">Formula Reference</h4>
+                    <p class="text-muted">
+                        Quick access to essential formulas and equations 
+                        with detailed explanations and examples.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card card-crimson h-100 text-center p-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4 class="fw-bold">Mobile Friendly</h4>
+                    <p class="text-muted">
+                        Learn anywhere, anytime with our responsive design 
+                        that works on all devices.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card card-crimson h-100 text-center p-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h4 class="fw-bold">Achievement System</h4>
+                    <p class="text-muted">
+                        Earn badges and certificates as you complete 
+                        lessons and master different topics.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Progress Section (for authenticated users) -->
+{% if user.is_authenticated and user_progress %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="fw-bold mb-4">
+                    <i class="fas fa-chart-line me-2"></i>Your Recent Progress
+                </h3>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for progress in user_progress %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-crimson">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ progress.subject }}: {{ progress.topic }}</h5>
+                        <div class="progress mb-3" style="height: 8px;">
+                            <div class="progress-bar progress-bar-crimson" 
+                                 style="width: {{ progress.completion_percentage }}%"></div>
+                        </div>
+                        <p class="card-text text-muted">
+                            {{ progress.completed_lessons }} of {{ progress.total_lessons }} lessons completed
+                        </p>
+                        <small class="text-muted">
+                            Last accessed: {{ progress.last_accessed|date:"M d, Y" }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'users:progress' %}" class="btn btn-crimson">
+                <i class="fas fa-chart-line me-2"></i>View Full Progress
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Call to Action Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="display-5 fw-bold mb-4">Ready to Start Your STEM Journey?</h2>
+                <p class="lead mb-4">
+                    Join thousands of engineering students who are already mastering STEM fundamentals
+                </p>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'account_signup' %}" class="btn btn-crimson btn-lg">
+                        <i class="fas fa-rocket me-2"></i>Start Learning Today
+                    </a>
+                {% else %}
+                    <a href="{% url 'stem:subject_list' %}" class="btn btn-crimson btn-lg">
+                        <i class="fas fa-book me-2"></i>Explore Subjects
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

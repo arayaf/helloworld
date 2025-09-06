@@ -1,0 +1,87 @@
+/* Custom CSS for STEM Learning Platform */
+
+/* Additional crimson theme styles */
+.btn-outline-crimson {
+    color: var(--crimson-primary);
+    border-color: var(--crimson-primary);
+}
+
+.btn-outline-crimson:hover {
+    color: white;
+    background-color: var(--crimson-primary);
+    border-color: var(--crimson-primary);
+}
+
+/* Quiz styles */
+.quiz-option {
+    transition: all 0.3s ease;
+}
+
+.quiz-option:hover {
+    background-color: var(--crimson-lighter);
+    transform: translateX(5px);
+}
+
+.quiz-option.selected {
+    background-color: var(--crimson-primary);
+    color: white;
+}
+
+/* Progress animations */
+.progress-bar {
+    transition: width 0.6s ease;
+}
+
+/* Card hover effects */
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(220, 20, 60, 0.2);
+}
+
+/* Loading spinner */
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--crimson-primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive text */
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .display-4 {
+        font-size: 2.5rem;
+    }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--crimson-primary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--crimson-dark);
+}

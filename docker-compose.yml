@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: stem_learning_db
+      POSTGRES_USER: stem_user
+      POSTGRES_PASSWORD: stem_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/workspace
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - DATABASE_URL=postgresql://stem_user:stem_password@db:5432/stem_learning_db
+    depends_on:
+      - db
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
