@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - {{ user.full_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <h1 class="display-4 fw-bold text-dark">
+                <i class="fas fa-user-circle me-3"></i>My Profile
+            </h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card card-crimson">
+                <div class="card-body text-center p-4">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" class="rounded-circle mb-3" 
+                             style="width: 150px; height: 150px; object-fit: cover;" alt="Profile Picture">
+                    {% else %}
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-3 mx-auto" 
+                             style="width: 150px; height: 150px;">
+                            <i class="fas fa-user fa-3x text-white"></i>
+                        </div>
+                    {% endif %}
+                    <h3 class="fw-bold">{{ user.full_name }}</h3>
+                    <p class="text-muted">{{ user.email }}</p>
+                    <a href="{% url 'users:profile_edit' %}" class="btn btn-crimson">
+                        <i class="fas fa-edit me-2"></i>Edit Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-8">
+            <div class="card card-crimson">
+                <div class="card-header">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Personal Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <strong>First Name:</strong>
+                            <p class="text-muted">{{ user.first_name }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Last Name:</strong>
+                            <p class="text-muted">{{ user.last_name }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Email:</strong>
+                            <p class="text-muted">{{ user.email }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Year of Study:</strong>
+                            <p class="text-muted">{{ user.year_of_study }}</p>
+                        </div>
+                        {% if user.university %}
+                        <div class="col-md-6">
+                            <strong>University:</strong>
+                            <p class="text-muted">{{ user.university }}</p>
+                        </div>
+                        {% endif %}
+                        {% if user.major %}
+                        <div class="col-md-6">
+                            <strong>Major:</strong>
+                            <p class="text-muted">{{ user.major }}</p>
+                        </div>
+                        {% endif %}
+                        {% if user.bio %}
+                        <div class="col-12">
+                            <strong>Bio:</strong>
+                            <p class="text-muted">{{ user.bio }}</p>
+                        </div>
+                        {% endif %}
+                        <div class="col-md-6">
+                            <strong>Member Since:</strong>
+                            <p class="text-muted">{{ user.date_joined|date:"F d, Y" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Last Login:</strong>
+                            <p class="text-muted">{{ user.last_login|date:"F d, Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if user_progress %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card card-crimson">
+                <div class="card-header">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-chart-line me-2"></i>Recent Progress
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        {% for progress in user_progress %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="fw-bold">{{ progress.subject }}: {{ progress.topic }}</h6>
+                                    <div class="progress mb-2" style="height: 6px;">
+                                        <div class="progress-bar progress-bar-crimson" 
+                                             style="width: {{ progress.completion_percentage }}%"></div>
+                                    </div>
+                                    <small class="text-muted">
+                                        {{ progress.completed_lessons }}/{{ progress.total_lessons }} lessons
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'users:progress' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-chart-line me-2"></i>View Full Progress
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

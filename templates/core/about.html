@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - STEM Learning Platform{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark">About STEM Learning Platform</h1>
+            <p class="lead text-muted">Empowering the next generation of engineers</p>
+        </div>
+    </div>
+    
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="card card-crimson">
+                <div class="card-body p-5">
+                    <h3 class="fw-bold mb-4">Our Mission</h3>
+                    <p class="lead">
+                        We believe that every first-year engineering student deserves access to high-quality, 
+                        comprehensive STEM education that builds strong foundations for their academic and 
+                        professional journey.
+                    </p>
+                    <p>
+                        Our platform is specifically designed to bridge the gap between high school and 
+                        university-level STEM education, providing students with the tools, resources, 
+                        and support they need to succeed in their engineering studies.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="card card-crimson h-100">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-3">
+                        <i class="fas fa-target me-2"></i>Our Vision
+                    </h4>
+                    <p>
+                        To become the leading online platform for first-year engineering education, 
+                        helping students worldwide master STEM fundamentals and build confidence 
+                        in their academic pursuits.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card card-crimson h-100">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-3">
+                        <i class="fas fa-heart me-2"></i>Our Values
+                    </h4>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Accessibility for all students</li>
+                        <li><i class="fas fa-check text-success me-2"></i>High-quality educational content</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Interactive and engaging learning</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Continuous improvement</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="fw-bold text-center mb-5">What We Offer</h2>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="text-center">
+                <div class="feature-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h4 class="fw-bold">Comprehensive Curriculum</h4>
+                <p class="text-muted">
+                    Structured lessons covering Mathematics, Physics, Chemistry, 
+                    and other essential STEM subjects.
+                </p>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="text-center">
+                <div class="feature-icon">
+                    <i class="fas fa-puzzle-piece"></i>
+                </div>
+                <h4 class="fw-bold">Interactive Learning</h4>
+                <p class="text-muted">
+                    Quizzes, exercises, and interactive content to reinforce 
+                    learning and test understanding.
+                </p>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="text-center">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h4 class="fw-bold">Community Support</h4>
+                <p class="text-muted">
+                    Study groups and peer collaboration features to enhance 
+                    the learning experience.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="card card-crimson">
+                <div class="card-body p-5">
+                    <h3 class="fw-bold mb-4">Join Our Community</h3>
+                    <p class="lead mb-4">
+                        Ready to start your STEM learning journey? Join thousands of students 
+                        who are already mastering engineering fundamentals.
+                    </p>
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'account_signup' %}" class="btn btn-crimson btn-lg">
+                            <i class="fas fa-rocket me-2"></i>Get Started Today
+                        </a>
+                    {% else %}
+                        <a href="{% url 'stem:subject_list' %}" class="btn btn-crimson btn-lg">
+                            <i class="fas fa-book me-2"></i>Start Learning
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

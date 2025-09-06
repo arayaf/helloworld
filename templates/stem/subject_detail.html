@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ subject.name }} - STEM Learning Platform{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 mb-5">
+            <div class="subject-card">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="{{ subject.icon }} fa-3x me-4"></i>
+                    <div>
+                        <h1 class="display-5 fw-bold mb-2">{{ subject.name }}</h1>
+                        <p class="lead mb-0">{{ subject.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <h2 class="fw-bold mb-4">
+                <i class="fas fa-list me-2"></i>Topics in {{ subject.name }}
+            </h2>
+        </div>
+    </div>
+    
+    <div class="row g-4">
+        {% for topic in subject.topics.all %}
+        <div class="col-lg-6 col-md-6">
+            <div class="card card-crimson h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h4 class="fw-bold">{{ topic.title }}</h4>
+                        <span class="badge bg-secondary">
+                            Level {{ topic.difficulty_level }}
+                        </span>
+                    </div>
+                    <p class="text-muted mb-3">{{ topic.description }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>{{ topic.estimated_duration }} min
+                            </small>
+                            <small class="text-muted ms-3">
+                                <i class="fas fa-book me-1"></i>{{ topic.lessons.count }} lessons
+                            </small>
+                        </div>
+                        <a href="{% url 'stem:topic_detail' topic.pk %}" class="btn btn-crimson">
+                            <i class="fas fa-play me-2"></i>Start Learning
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <div class="card card-crimson">
+                <div class="card-body p-5">
+                    <i class="fas fa-book fa-3x text-muted mb-3"></i>
+                    <h4 class="fw-bold">No topics available yet</h4>
+                    <p class="text-muted">Content for {{ subject.name }} is coming soon!</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
