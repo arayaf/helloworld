@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ใบปลิว — พัฒนาทักษะดิจิทัล</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Sarabun', 'Segoe UI', sans-serif;
+    background: #f0f4f8;
+    display: flex; justify-content: center; align-items: flex-start;
+    min-height: 100vh; padding: 24px 16px;
+  }
+
+  .flyer {
+    width: 210mm;
+    max-width: 794px;
+    background: white;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    position: relative;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #1A56A0 60%, #2563eb 100%);
+    padding: 36px 36px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .header::after {
+    content: '';
+    position: absolute; bottom: -60px; right: 60px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .org-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    color: #bfdbfe; font-size: 11px; font-weight: 600;
+    padding: 4px 12px; border-radius: 20px;
+    letter-spacing: 0.5px; margin-bottom: 14px;
+  }
+  .header h1 {
+    color: white; font-size: 30px; font-weight: 800;
+    line-height: 1.25; margin-bottom: 8px;
+  }
+  .header h1 span { color: #93c5fd; }
+  .header-sub {
+    color: #bfdbfe; font-size: 13px; font-weight: 400;
+    margin-bottom: 22px;
+  }
+  .stats-row {
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .stat-chip {
+    background: rgba(255,255,255,0.13);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white; border-radius: 10px;
+    padding: 8px 16px; text-align: center;
+  }
+  .stat-chip .num { font-size: 22px; font-weight: 800; display: block; }
+  .stat-chip .lbl { font-size: 10px; color: #bfdbfe; font-weight: 400; }
+
+  /* ── HOOK ── */
+  .hook {
+    background: #fef9c3;
+    border-left: 5px solid #f59e0b;
+    padding: 14px 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hook-icon { font-size: 26px; flex-shrink: 0; }
+  .hook p { font-size: 13px; color: #78350f; font-weight: 600; line-height: 1.6; }
+  .hook p span { color: #1A56A0; }
+
+  /* ── OUTCOME ── */
+  .outcome-section {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+    padding: 24px 32px;
+  }
+  .outcome-section h2 {
+    color: #93c5fd; font-size: 12px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .outcome-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .outcome-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 10px 12px;
+  }
+  .outcome-item .oi { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .outcome-item p { color: #e2e8f0; font-size: 12px; line-height: 1.5; }
+  .outcome-item p strong { color: white; font-weight: 700; display: block; margin-bottom: 2px; }
+
+  /* ── PHASES ── */
+  .phases { padding: 24px 28px; }
+  .phases-title {
+    font-size: 13px; font-weight: 700; color: #475569;
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 16px; text-align: center;
+  }
+  .phase-block { margin-bottom: 16px; }
+  .phase-label {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 8px;
+  }
+  .phase-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .phase-label span {
+    font-size: 12px; font-weight: 700;
+  }
+  .session-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+  }
+  .session-card {
+    border-radius: 8px; padding: 9px 10px;
+    border: 1px solid transparent;
+    position: relative; overflow: hidden;
+  }
+  .session-card .s-id {
+    font-size: 10px; font-weight: 800; margin-bottom: 3px; display: block;
+  }
+  .session-card .s-title {
+    font-size: 11px; font-weight: 600; color: #0f172a; line-height: 1.35;
+    margin-bottom: 4px;
+  }
+  .session-card .s-items {
+    list-style: none;
+  }
+  .session-card .s-items li {
+    font-size: 10px; color: #64748b; line-height: 1.5;
+    padding-left: 10px; position: relative;
+  }
+  .session-card .s-items li::before {
+    content: '·'; position: absolute; left: 2px; color: #94a3b8;
+  }
+  .session-card .s-note {
+    display: inline-block; margin-top: 5px;
+    font-size: 9px; font-weight: 700; padding: 2px 7px;
+    border-radius: 20px;
+  }
+
+  /* Phase 1 */
+  .p1 { background: #eff6ff; border-color: #bfdbfe; }
+  .p1 .s-id { color: #1A56A0; }
+  .p1 .s-note { background: #dbeafe; color: #1A56A0; }
+  .dot-p1 { background: #1A56A0; }
+  .lbl-p1 { color: #1A56A0; }
+
+  /* Phase 2 */
+  .p2 { background: #f0fdf4; border-color: #bbf7d0; }
+  .p2 .s-id { color: #15803d; }
+  .p2 .s-note { background: #dcfce7; color: #15803d; }
+  .dot-p2 { background: #15803d; }
+  .lbl-p2 { color: #15803d; }
+
+  /* Phase 3 */
+  .p3 { background: #faf5ff; border-color: #ddd6fe; }
+  .p3 .s-id { color: #5b21b6; }
+  .p3 .s-note { background: #ede9fe; color: #5b21b6; }
+  .dot-p3 { background: #5b21b6; }
+  .lbl-p3 { color: #5b21b6; }
+
+  /* ── TRAINER PATH ── */
+  .trainer-section {
+    margin: 0 28px 20px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-radius: 12px; padding: 16px 20px;
+    border: 1px solid #fcd34d;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .trainer-icon { font-size: 32px; flex-shrink: 0; }
+  .trainer-section h3 { font-size: 14px; font-weight: 800; color: #78350f; margin-bottom: 4px; }
+  .trainer-section p { font-size: 12px; color: #92400e; line-height: 1.5; }
+
+  /* ── REGISTER ── */
+  .register {
+    background: linear-gradient(135deg, #1A56A0, #0ea5e9);
+    padding: 22px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+  }
+  .register-text h3 { color: white; font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+  .register-text p { color: #bfdbfe; font-size: 12px; }
+  .register-info {
+    display: flex; flex-direction: column; gap: 6px; align-items: flex-end;
+  }
+  .reg-chip {
+    background: white; border-radius: 8px;
+    padding: 6px 14px; font-size: 12px; font-weight: 700;
+    color: #1A56A0; display: flex; align-items: center; gap: 6px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: #f8fafc; border-top: 1px solid #e2e8f0;
+    padding: 10px 32px; text-align: center;
+  }
+  .footer p { font-size: 10px; color: #94a3b8; }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; padding: 0; }
+    .flyer { box-shadow: none; width: 100%; max-width: 100%; }
+    .no-print { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="flyer">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="org-tag">🎓 เรียนเทคโนโลยีกับสำนักดิจิทัลฯ</div>
+    <h1>เรียนรู้ <span>ดิจิทัล</span><br>เปลี่ยนวิธีทำงาน</h1>
+    <p class="header-sub">หลักสูตรพัฒนาทักษะ Google Workspace + MS 365 + AI สำหรับเจ้าหน้าที่สนับสนุนและผู้สนใจ</p>
+    <div class="stats-row">
+      <div class="stat-chip"><span class="num">18</span><span class="lbl">Sessions</span></div>
+      <div class="stat-chip"><span class="num">30</span><span class="lbl">นาที/session</span></div>
+      <div class="stat-chip"><span class="num">1–5</span><span class="lbl">คน/กลุ่ม</span></div>
+      <div class="stat-chip"><span class="num">ฟรี</span><span class="lbl">ไม่มีค่าใช้จ่าย</span></div>
+    </div>
+  </div>
+
+  <!-- HOOK -->
+  <div class="hook">
+    <div class="hook-icon">💡</div>
+    <p>เคยส่งปฏิทินนัดประชุม <span>แล้วเวลาไม่ตรงกัน</span>? ไม่รู้ว่าไฟล์ควรเก็บใน <span>Drive หรือ OneDrive</span>?<br>
+    หรือทำงานซ้ำๆ ที่อยากให้ระบบทำแทน? — หลักสูตรนี้แก้ทุกปัญหานั้น<br>
+    <span>🖥️ ไม่มี Notebook ไม่เป็นไร — สำนักฯ มี Notebook เตรียมไว้ให้</span></p>
+  </div>
+
+  <!-- OUTCOMES -->
+  <div class="outcome-section">
+    <h2>⚡ เมื่อจบหลักสูตร คุณจะทำได้</h2>
+    <div class="outcome-grid">
+      <div class="outcome-item">
+        <span class="oi">📅</span>
+        <p><strong>ส่ง invite ได้ถูกต้อง 100%</strong>timezone ตรง, ลิงก์ Meet/Teams ถูกต้อง</p>
+      </div>
+      <div class="outcome-item">
+        <span class="oi">🗂️</span>
+        <p><strong>จัดไฟล์อย่างเป็นระบบ</strong>ไฟล์ Google → Drive | ไฟล์ MS → OneDrive</p>
+      </div>
+      <div class="outcome-item">
+        <span class="oi">📊</span>
+        <p><strong>ใช้ Sheets เป็นฐานข้อมูล</strong>สูตร VLOOKUP/IF/COUNTIF + รับข้อมูลจาก Form</p>
+      </div>
+      <div class="outcome-item">
+        <span class="oi">⚙️</span>
+        <p><strong>สร้าง Workflow อัตโนมัติ</strong>Form → Email แจ้ง → Calendar → Report อัตโนมัติ</p>
+      </div>
+      <div class="outcome-item">
+        <span class="oi">🤖</span>
+        <p><strong>ใช้ Gemini AI ช่วยงาน</strong>draft อีเมล, สรุปเอกสาร, สรุปประชุม</p>
+      </div>
+      <div class="outcome-item">
+        <span class="oi">💻</span>
+        <p><strong>เขียน Apps Script ได้</strong>automate งานซ้ำๆ ด้วย AI ช่วยเขียนโค้ด</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SESSION LIST -->
+  <div class="phases">
+    <p class="phases-title">📚 เนื้อหาทั้ง 18 Sessions</p>
+
+    <!-- Phase 1 -->
+    <div class="phase-block">
+      <div class="phase-label">
+        <div class="phase-dot dot-p1"></div>
+        <span class="lbl-p1">Phase 1 — Digital Workspace Literacy (S1–S5b)</span>
+      </div>
+      <div class="session-grid">
+        <div class="session-card p1">
+          <span class="s-id">S1 · Calendar & Contacts</span>
+          <div class="s-title">ปฏิทิน + Meeting Link + Label</div>
+          <ul class="s-items">
+            <li>สร้าง event + timezone ถูกต้อง</li>
+            <li>ลิงก์ Meet/Teams ไม่หลุด</li>
+            <li>Label กลุ่ม invite ในคลิกเดียว</li>
+          </ul>
+          <span class="s-note">🎯 แก้ปัญหาปฏิทินไม่ตรง</span>
+        </div>
+        <div class="session-card p1">
+          <span class="s-id">S2 · Gmail & Outlook</span>
+          <div class="s-title">อีเมล์มืออาชีพ</div>
+          <ul class="s-items">
+            <li>Signature + CC/BCC ถูกต้อง</li>
+            <li>Schedule send</li>
+            <li>Gemini draft อีเมล์ให้</li>
+          </ul>
+        </div>
+        <div class="session-card p1">
+          <span class="s-id">S3 · Google Drive</span>
+          <div class="s-title">จัดเก็บไฟล์ Google</div>
+          <ul class="s-items">
+            <li>โฟลเดอร์เป็นระบบ</li>
+            <li>Shared Drive + permission</li>
+            <li>ไฟล์ Google เท่านั้น ไม่กิน quota</li>
+          </ul>
+          <span class="s-note">🟢 ไฟล์ Google เท่านั้น</span>
+        </div>
+        <div class="session-card p1">
+          <span class="s-id">S3b · OneDrive</span>
+          <div class="s-title">จัดเก็บไฟล์ Microsoft</div>
+          <ul class="s-items">
+            <li>ซิงก์ .docx/.xlsx/.pptx อัตโนมัติ</li>
+            <li>แชร์ link + กำหนดวันหมดอายุ</li>
+            <li>Version history 30 วัน</li>
+          </ul>
+          <span class="s-note">🔵 ไฟล์ MS เท่านั้น</span>
+        </div>
+        <div class="session-card p1">
+          <span class="s-id">S4 · Docs & Word Online</span>
+          <div class="s-title">ทำงานร่วมกัน Real-time</div>
+          <ul class="s-items">
+            <li>Co-edit + Comment/Suggest</li>
+            <li>Version history</li>
+            <li>Gemini draft หนังสือ</li>
+          </ul>
+        </div>
+        <div class="session-card p1">
+          <span class="s-id">S5 · Gemini AI ภาพรวม</span>
+          <div class="s-title">AI ใน Workspace ทุก app</div>
+          <ul class="s-items">
+            <li>Gemini ใน Gmail/Docs/Sheets/Meet</li>
+            <li>เขียน Prompt ที่ดี</li>
+            <li>ข้อควรระวังข้อมูลลับ</li>
+          </ul>
+          <span class="s-note">🤖 AI session</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase-block">
+      <div class="phase-label">
+        <div class="phase-dot dot-p2"></div>
+        <span class="lbl-p2">Phase 2 — Google Sheets as Database + AI Automation (S6–S12)</span>
+      </div>
+      <div class="session-grid">
+        <div class="session-card p2">
+          <span class="s-id">S6 · Sheets พื้นฐาน</span>
+          <div class="s-title">ตารางข้อมูลที่ถูกต้อง</div>
+          <ul class="s-items">
+            <li>Data Validation (Dropdown)</li>
+            <li>Freeze + Filter</li>
+            <li>ถามสูตรด้วยภาษาไทย</li>
+          </ul>
+        </div>
+        <div class="session-card p2">
+          <span class="s-id">S7 · VLOOKUP/IF/COUNTIF</span>
+          <div class="s-title">สูตรที่จำเป็นสำหรับธุรการ</div>
+          <ul class="s-items">
+            <li>ดึงข้อมูลข้ามชีต</li>
+            <li>เงื่อนไขอัตโนมัติ</li>
+            <li>นับตามเงื่อนไขได้</li>
+          </ul>
+        </div>
+        <div class="session-card p2">
+          <span class="s-id">S8 · Sheets เป็น DB 🔑</span>
+          <div class="s-title">คิดแบบฐานข้อมูล</div>
+          <ul class="s-items">
+            <li>1 row = 1 record</li>
+            <li>ไม่ merge cell</li>
+            <li>Gemini ช่วย design ตาราง</li>
+          </ul>
+          <span class="s-note">🔑 จุดเปลี่ยนสำคัญ</span>
+        </div>
+        <div class="session-card p2">
+          <span class="s-id">S9 · Forms → Sheets</span>
+          <div class="s-title">รับข้อมูลอัตโนมัติ</div>
+          <ul class="s-items">
+            <li>รับใบลา/ลงทะเบียนแทน email</li>
+            <li>ข้อมูลเข้า Sheets เอง</li>
+          </ul>
+        </div>
+        <div class="session-card p2">
+          <span class="s-id">S10 · Workspace Studio</span>
+          <div class="s-title">Automation ไม่ต้องเขียนโค้ด</div>
+          <ul class="s-items">
+            <li>Form → Email อัตโนมัติ</li>
+            <li>Sheets → Calendar event</li>
+            <li>Drive → แจ้งเตือน Chat</li>
+          </ul>
+          <span class="s-note">🤖 AI session</span>
+        </div>
+        <div class="session-card p2">
+          <span class="s-id">S11–S12 · Dashboard & AI</span>
+          <div class="s-title">Looker Studio + NotebookLM</div>
+          <ul class="s-items">
+            <li>Dashboard จาก Sheets</li>
+            <li>ถามคำถามจากเอกสารองค์กร</li>
+          </ul>
+          <span class="s-note">🤖 AI session</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase-block">
+      <div class="phase-label">
+        <div class="phase-dot dot-p3"></div>
+        <span class="lbl-p3">Phase 3 — Google Apps Script + AI (S13–S18)</span>
+      </div>
+      <div class="session-grid">
+        <div class="session-card p3">
+          <span class="s-id">S13 · Apps Script เบื้องต้น</span>
+          <div class="s-title">เปิด Editor ครั้งแรก</div>
+          <ul class="s-items">
+            <li>Script แรก + Trigger</li>
+            <li>Gemini เขียน Script ให้</li>
+          </ul>
+        </div>
+        <div class="session-card p3">
+          <span class="s-id">S14 · อ่าน-เขียน Sheets</span>
+          <div class="s-title">Script ควบคุม Sheets</div>
+          <ul class="s-items">
+            <li>getValues / setValue / loop</li>
+            <li>สีแถวอัตโนมัติตามสถานะ</li>
+          </ul>
+        </div>
+        <div class="session-card p3">
+          <span class="s-id">S15 · Email อัตโนมัติ</span>
+          <div class="s-title">ส่ง Email จาก Sheets</div>
+          <ul class="s-items">
+            <li>GmailApp.sendEmail()</li>
+            <li>Reminder อัตโนมัติ</li>
+          </ul>
+        </div>
+        <div class="session-card p3">
+          <span class="s-id">S16 · Script ด้วย Gemini AI</span>
+          <div class="s-title">AI เขียนโค้ดให้คุณ</div>
+          <ul class="s-items">
+            <li>Prompt Pattern 4 ส่วน</li>
+            <li>Mini-project งานจริง</li>
+          </ul>
+          <span class="s-note">🤖 AI session</span>
+        </div>
+        <div class="session-card p3">
+          <span class="s-id">S17 · Gemini in Meet</span>
+          <div class="s-title">สรุปประชุมอัตโนมัติ</div>
+          <ul class="s-items">
+            <li>Action items หลังประชุม</li>
+            <li>Transcript อัตโนมัติ</li>
+          </ul>
+        </div>
+        <div class="session-card p3">
+          <span class="s-id">S18 · Capstone 🏆</span>
+          <div class="s-title">AI Workflow ครบวงจร</div>
+          <ul class="s-items">
+            <li>Form→Sheets→Auto→Report</li>
+            <li>นำเสนอ workflow ตัวเอง</li>
+          </ul>
+          <span class="s-note">🏆 Capstone</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRAINER -->
+  <div class="trainer-section">
+    <div class="trainer-icon">🏫</div>
+    <div>
+      <h3>Train-the-Trainer — เรียนแล้ว สอนต่อได้เลย!</h3>
+      <p>เมื่อเรียนจบแต่ละ session → คุณสามารถเป็น <strong>Trainer</strong> สอนต่อให้เพื่อนร่วมงานกลุ่มถัดไปได้ทันที
+      กลุ่มแรก 5 คน เรียน S1 → ไปสอนต่ออีก 4 กลุ่ม = ความรู้แพร่กระจายเร็วขึ้น 5 เท่า</p>
+    </div>
+  </div>
+
+  <!-- SCHEDULE TABLE -->
+  <div style="padding: 20px 28px 16px; background:#f8fafc; border-top: 1px solid #e2e8f0;">
+    <p style="font-size:12px; font-weight:700; color:#475569; letter-spacing:1px; text-transform:uppercase; margin-bottom:14px; text-align:center;">
+      📅 ตารางการอบรม — เวลา 16:00–16:30 น. · จันทร์–ศุกร์
+    </p>
+
+    <!-- legend -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:14px;font-size:10px;">
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;border-radius:3px;background:#dbeafe;display:inline-block;border:1px solid #93c5fd;"></span>Phase 1</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;border-radius:3px;background:#bbf7d0;display:inline-block;border:1px solid #6ee7b7;"></span>Phase 2</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;border-radius:3px;background:#ddd6fe;display:inline-block;border:1px solid #c4b5fd;"></span>Phase 3</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;border-radius:3px;background:#fee2e2;display:inline-block;border:1px solid #fca5a5;"></span>งด/หยุด</span>
+    </div>
+
+    <!-- ── JUNE 2026 ── -->
+    <div style="margin-bottom:14px;">
+      <div style="background:#1e3a5f;color:white;text-align:center;padding:6px;border-radius:8px 8px 0 0;font-size:11px;font-weight:700;">มิถุนายน 2569</div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;overflow:hidden;">
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">จ</div>
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">อ</div>
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">พ</div>
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">พฤ</div>
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">ศ</div>
+        <div style="background:#1e293b;color:#475569;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">ส</div>
+        <div style="background:#1e293b;color:#475569;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">อา</div>
+        <!-- สัปดาห์ 29-30 มิ.ย. เริ่มจันทร์ 29 -->
+        <div style="background:#f8fafc;text-align:center;padding:6px 2px;font-size:9px;color:#94a3b8;border:1px solid #f1f5f9;">29</div>
+        <div style="background:#dbeafe;text-align:center;padding:4px 2px;border:1px solid #93c5fd;">
+          <div style="font-size:8px;color:#64748b;">30</div>
+          <div style="font-size:10px;font-weight:800;color:#1A56A0;">S1</div>
+        </div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+      </div>
+    </div>
+
+    <!-- ── JULY 2026 ── -->
+    <div style="margin-bottom:14px;">
+      <div style="background:#1e3a5f;color:white;text-align:center;padding:6px;border-radius:8px 8px 0 0;font-size:11px;font-weight:700;">กรกฎาคม 2569</div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;overflow:hidden;">
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">จ</div>
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">อ</div>
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">พ</div>
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">พฤ</div>
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">ศ</div>
+        <div style="background:#1e293b;color:#475569;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">ส</div>
+        <div style="background:#1e293b;color:#475569;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">อา</div>
+        <!-- week 1: 1-5 (July starts Wednesday) -->
+        <!-- จ 30 มิ.ย. handled above; Jul 1=พ งด, 2=พฤ S2, 3=ศ S3 -->
+        <div style="background:#f8fafc;border:1px solid #f1f5f9;"></div><!-- จ (ว่าง) -->
+        <div style="background:#f8fafc;border:1px solid #f1f5f9;"></div><!-- อ (ว่าง) -->
+        <!-- 1 งด -->
+        <div style="background:#fee2e2;text-align:center;padding:4px 2px;border:1px solid #fca5a5;">
+          <div style="font-size:8px;color:#dc2626;">1</div>
+          <div style="font-size:8px;font-weight:700;color:#dc2626;">งด</div>
+        </div>
+        <!-- 2 S2 -->
+        <div style="background:#dbeafe;text-align:center;padding:4px 2px;border:1px solid #93c5fd;">
+          <div style="font-size:8px;color:#64748b;">2</div>
+          <div style="font-size:10px;font-weight:800;color:#1A56A0;">S2</div>
+        </div>
+        <!-- 3 S3 -->
+        <div style="background:#dbeafe;text-align:center;padding:4px 2px;border:1px solid #93c5fd;">
+          <div style="font-size:8px;color:#64748b;">3</div>
+          <div style="font-size:10px;font-weight:800;color:#1A56A0;">S3</div>
+        </div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <!-- week 2: 6-12 (6งด 7งด 8S4 9S5 10S6) -->
+        <div style="background:#fee2e2;text-align:center;padding:4px 2px;border:1px solid #fca5a5;">
+          <div style="font-size:8px;color:#dc2626;">6</div>
+          <div style="font-size:8px;font-weight:700;color:#dc2626;">งด</div>
+        </div>
+        <div style="background:#fee2e2;text-align:center;padding:4px 2px;border:1px solid #fca5a5;">
+          <div style="font-size:8px;color:#dc2626;">7</div>
+          <div style="font-size:8px;font-weight:700;color:#dc2626;">งด</div>
+        </div>
+        <!-- 8 S4 -->
+        <div style="background:#dbeafe;text-align:center;padding:4px 2px;border:1px solid #93c5fd;">
+          <div style="font-size:8px;color:#64748b;">8</div>
+          <div style="font-size:10px;font-weight:800;color:#1A56A0;">S4</div>
+        </div>
+        <!-- 9 S5 -->
+        <div style="background:#dbeafe;text-align:center;padding:4px 2px;border:1px solid #93c5fd;">
+          <div style="font-size:8px;color:#64748b;">9</div>
+          <div style="font-size:10px;font-weight:800;color:#1A56A0;">S5</div>
+        </div>
+        <!-- 10 S6 -->
+        <div style="background:#dbeafe;text-align:center;padding:4px 2px;border:1px solid #93c5fd;">
+          <div style="font-size:8px;color:#64748b;">10</div>
+          <div style="font-size:10px;font-weight:800;color:#1A56A0;">S6</div>
+        </div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <!-- week 3: 13-19 (13S7 14S8 15งด 16งด 17S9) -->
+        <div style="background:#bbf7d0;text-align:center;padding:4px 2px;border:1px solid #6ee7b7;">
+          <div style="font-size:8px;color:#64748b;">13</div>
+          <div style="font-size:10px;font-weight:800;color:#15803d;">S7</div>
+        </div>
+        <div style="background:#bbf7d0;text-align:center;padding:4px 2px;border:1px solid #6ee7b7;">
+          <div style="font-size:8px;color:#64748b;">14</div>
+          <div style="font-size:10px;font-weight:800;color:#15803d;">S8</div>
+        </div>
+        <div style="background:#fee2e2;text-align:center;padding:4px 2px;border:1px solid #fca5a5;">
+          <div style="font-size:8px;color:#dc2626;">15</div>
+          <div style="font-size:8px;font-weight:700;color:#dc2626;">ราชการ</div>
+        </div>
+        <div style="background:#fee2e2;text-align:center;padding:4px 2px;border:1px solid #fca5a5;">
+          <div style="font-size:8px;color:#dc2626;">16</div>
+          <div style="font-size:8px;font-weight:700;color:#dc2626;">ราชการ</div>
+        </div>
+        <div style="background:#bbf7d0;text-align:center;padding:4px 2px;border:1px solid #6ee7b7;">
+          <div style="font-size:8px;color:#64748b;">17</div>
+          <div style="font-size:10px;font-weight:800;color:#15803d;">S9</div>
+        </div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <!-- week 4: 20-26 (20S10 21S11 22S12 23S13 24S14) -->
+        <div style="background:#bbf7d0;text-align:center;padding:4px 2px;border:1px solid #6ee7b7;">
+          <div style="font-size:8px;color:#64748b;">20</div>
+          <div style="font-size:10px;font-weight:800;color:#15803d;">S10</div>
+        </div>
+        <div style="background:#bbf7d0;text-align:center;padding:4px 2px;border:1px solid #6ee7b7;">
+          <div style="font-size:8px;color:#64748b;">21</div>
+          <div style="font-size:10px;font-weight:800;color:#15803d;">S11</div>
+        </div>
+        <div style="background:#bbf7d0;text-align:center;padding:4px 2px;border:1px solid #6ee7b7;">
+          <div style="font-size:8px;color:#64748b;">22</div>
+          <div style="font-size:10px;font-weight:800;color:#15803d;">S12</div>
+        </div>
+        <div style="background:#ddd6fe;text-align:center;padding:4px 2px;border:1px solid #c4b5fd;">
+          <div style="font-size:8px;color:#64748b;">23</div>
+          <div style="font-size:10px;font-weight:800;color:#5b21b6;">S13</div>
+        </div>
+        <div style="background:#ddd6fe;text-align:center;padding:4px 2px;border:1px solid #c4b5fd;">
+          <div style="font-size:8px;color:#64748b;">24</div>
+          <div style="font-size:10px;font-weight:800;color:#5b21b6;">S14</div>
+        </div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <!-- week 5: 27-31 หยุดทั้งสัปดาห์ -->
+        <div style="background:#fee2e2;text-align:center;padding:4px 2px;border:1px solid #fca5a5;"><div style="font-size:8px;color:#dc2626;">27</div><div style="font-size:8px;color:#dc2626;">หยุด</div></div>
+        <div style="background:#fee2e2;text-align:center;padding:4px 2px;border:1px solid #fca5a5;"><div style="font-size:8px;color:#dc2626;">28</div><div style="font-size:8px;color:#dc2626;">หยุด</div></div>
+        <div style="background:#fee2e2;text-align:center;padding:4px 2px;border:1px solid #fca5a5;"><div style="font-size:8px;color:#dc2626;">29</div><div style="font-size:8px;color:#dc2626;">หยุด</div></div>
+        <div style="background:#fee2e2;text-align:center;padding:4px 2px;border:1px solid #fca5a5;"><div style="font-size:8px;color:#dc2626;">30</div><div style="font-size:8px;color:#dc2626;">หยุด</div></div>
+        <div style="background:#fee2e2;text-align:center;padding:4px 2px;border:1px solid #fca5a5;"><div style="font-size:8px;color:#dc2626;">31</div><div style="font-size:8px;color:#dc2626;">หยุด</div></div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+      </div>
+    </div>
+
+    <!-- ── AUGUST 2026 ── -->
+    <div style="margin-bottom:10px;">
+      <div style="background:#1e3a5f;color:white;text-align:center;padding:6px;border-radius:8px 8px 0 0;font-size:11px;font-weight:700;">สิงหาคม 2569</div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;overflow:hidden;">
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">จ</div>
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">อ</div>
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">พ</div>
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">พฤ</div>
+        <div style="background:#334155;color:#94a3b8;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">ศ</div>
+        <div style="background:#1e293b;color:#475569;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">ส</div>
+        <div style="background:#1e293b;color:#475569;text-align:center;padding:4px 2px;font-size:9px;font-weight:700;">อา</div>
+        <!-- Aug 1=เสาร์ Aug 2=อาทิตย์ so week 1: pad 5 days -->
+        <div style="background:#f8fafc;border:1px solid #f1f5f9;"></div>
+        <div style="background:#f8fafc;border:1px solid #f1f5f9;"></div>
+        <div style="background:#f8fafc;border:1px solid #f1f5f9;"></div>
+        <div style="background:#f8fafc;border:1px solid #f1f5f9;"></div>
+        <div style="background:#f8fafc;border:1px solid #f1f5f9;"></div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;text-align:center;padding:6px 2px;font-size:9px;color:#cbd5e1;">1</div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;text-align:center;padding:6px 2px;font-size:9px;color:#cbd5e1;">2</div>
+        <!-- week 2: 3S15 4S16 5S17 6S18🏆 7 8 9 -->
+        <div style="background:#ddd6fe;text-align:center;padding:4px 2px;border:1px solid #c4b5fd;">
+          <div style="font-size:8px;color:#64748b;">3</div>
+          <div style="font-size:10px;font-weight:800;color:#5b21b6;">S15</div>
+        </div>
+        <div style="background:#ddd6fe;text-align:center;padding:4px 2px;border:1px solid #c4b5fd;">
+          <div style="font-size:8px;color:#64748b;">4</div>
+          <div style="font-size:10px;font-weight:800;color:#5b21b6;">S16</div>
+        </div>
+        <div style="background:#ddd6fe;text-align:center;padding:4px 2px;border:1px solid #c4b5fd;">
+          <div style="font-size:8px;color:#64748b;">5</div>
+          <div style="font-size:10px;font-weight:800;color:#5b21b6;">S17</div>
+        </div>
+        <div style="background:#fcd34d;text-align:center;padding:4px 2px;border:1px solid #f59e0b;">
+          <div style="font-size:8px;color:#78350f;">6</div>
+          <div style="font-size:10px;font-weight:800;color:#78350f;">S18🏆</div>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #f1f5f9;text-align:center;padding:6px 2px;font-size:9px;color:#94a3b8;">7</div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+        <div style="background:#f1f5f9;border:1px solid #e2e8f0;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- REGISTER -->
+  <div class="register">
+    <div class="register-text">
+      <h3>🎯 รับสมัครผู้เข้าร่วมหลักสูตร</h3>
+      <p>กลุ่มละ 1–5 คน &nbsp;·&nbsp; จันทร์–ศุกร์ 16:00–16:30 น. &nbsp;·&nbsp; เริ่ม <strong style="color:white;">อังคาร 30 มิ.ย. 2569</strong></p>
+    </div>
+    <div class="register-info">
+      <div class="reg-chip">📝 <a href="https://docs.google.com/forms/d/e/1FAIpQLSfzvTG0ExAjd2oRNvlO11apKLz2jbOeuVvoB5NGykcSgpt4Xw/viewform" style="color:#1A56A0;text-decoration:none;font-weight:700;">คลิกที่นี่เพื่อลงทะเบียน</a></div>
+      <div class="reg-chip">📍 ตึกอธิการบดี (ห้องประชุม — แจ้งภายหลัง)</div>
+      <div class="reg-chip">🖥️ มี Notebook สำรองจากสำนักฯ</div>
+      <div class="reg-chip">🆓 ไม่มีค่าใช้จ่าย</div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>หลักสูตรนี้ใช้ Google Education Plus ที่มหาวิทยาลัยมีอยู่แล้ว · ไม่มีค่าใช้จ่ายเพิ่มเติม · รองรับทั้ง Google Workspace และ Microsoft 365<br>
+    📅 วันเรียนอาจมีการเปลี่ยนแปลง — ตรวจสอบได้จาก Google Calendar ของผู้สอน</p>
+  </div>
+
+</div>
+
+</body>
+</html>
