@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S5 — Gemini AI ใน Workspace ภาพรวม</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Sarabun', 'Segoe UI', sans-serif; background: #f0f4f8; display: flex; justify-content: center; padding: 24px 16px; }
+  .doc { width: 210mm; max-width: 794px; background: white; box-shadow: 0 8px 40px rgba(0,0,0,0.15); }
+  .header { background: linear-gradient(135deg, #1e3a5f 0%, #1A56A0 60%, #2563eb 100%); padding: 32px 36px 24px; position: relative; overflow: hidden; }
+  .header::before { content:''; position:absolute; top:-40px; right:-40px; width:200px; height:200px; border-radius:50%; background:rgba(255,255,255,0.06); }
+  .tag { display:inline-block; background:rgba(255,255,255,0.15); color:#bfdbfe; font-size:11px; font-weight:600; padding:4px 12px; border-radius:20px; margin-bottom:12px; }
+  .header h1 { color:white; font-size:26px; font-weight:800; line-height:1.3; margin-bottom:10px; }
+  .meta { display:flex; gap:14px; flex-wrap:wrap; color:#bfdbfe; font-size:12px; }
+  .meta span { display:flex; align-items:center; gap:5px; }
+  .section { padding: 22px 32px; border-bottom: 1px solid #f1f5f9; }
+  .section-title { font-size:15px; font-weight:800; color:#0f172a; margin-bottom:14px; }
+  .objective-box { background:#eff6ff; border-left:4px solid #1A56A0; border-radius:8px; padding:14px 18px; font-size:14px; color:#0f172a; font-weight:600; line-height:1.6; }
+  ul.outcomes { list-style:none; }
+  ul.outcomes li { position:relative; padding-left:24px; margin-bottom:8px; font-size:13px; color:#334155; line-height:1.6; }
+  ul.outcomes li::before { content:'✓'; position:absolute; left:0; color:#15803d; font-weight:800; }
+  table.schedule { width:100%; border-collapse:collapse; font-size:12.5px; }
+  table.schedule th { background:#1e3a5f; color:white; text-align:left; padding:8px 12px; font-size:11px; font-weight:700; }
+  table.schedule td { padding:9px 12px; border-bottom:1px solid #e2e8f0; vertical-align:top; }
+  table.schedule tr:nth-child(even) td { background:#f8fafc; }
+  table.schedule td.time { font-weight:700; color:#475569; white-space:nowrap; width:80px; }
+  table.schedule td.topic { font-weight:700; color:#0f172a; width:160px; }
+  table.schedule td.detail { color:#475569; }
+  ul.materials { list-style:none; }
+  ul.materials li { position:relative; padding-left:22px; margin-bottom:6px; font-size:13px; color:#475569; line-height:1.6; }
+  ul.materials li::before { content:'•'; position:absolute; left:6px; color:#94a3b8; font-weight:800; }
+  .ai-box { background:#ede9fe; border-left:4px solid #7c3aed; border-radius:8px; padding:14px 18px; font-size:13px; color:#0f172a; line-height:1.6; }
+  .ai-box b { color:#5b21b6; }
+  .trainer-box { background:#fef9c3; border-left:4px solid #d97706; border-radius:8px; padding:14px 18px; font-size:13px; color:#0f172a; line-height:1.6; }
+  .trainer-box b { color:#a16207; }
+  .footer-bar { background:#1e3a5f; color:white; text-align:center; padding:12px 20px; font-size:12px; font-weight:700; }
+  @media print { body { background:white; padding:0; } .doc { box-shadow:none; width:100%; max-width:100%; } }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <div class="header">
+    <div class="tag">🎓 Phase 1 · S5</div>
+    <h1>Gemini AI ใน Workspace ภาพรวม</h1>
+    <div class="meta">
+      <span>📅 ศุกร์ 10 ก.ค. 2569</span>
+      <span>⏱ 30 นาที</span>
+      <span>🕓 16:00–16:30 น.</span>
+      <span>📍 ตึกอธิการบดี</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🎯 วัตถุประสงค์</div>
+    <div class="objective-box">เข้าใจและใช้ Gemini AI ในทุก app ของ Google Workspace ได้อย่างถูกต้องและปลอดภัย</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">✅ ผลลัพธ์การเรียนรู้</div>
+    <ul class="outcomes">
+      <li>รู้ว่า Gemini มีอยู่ใน app ไหนบ้างและทำอะไรได้</li>
+      <li>เขียน Prompt ที่ดีได้ตาม Pattern: Context / Input / Output / Constraint</li>
+      <li>รู้ข้อควรระวังด้านความเป็นส่วนตัวและข้อมูลองค์กร</li>
+      <li>ทดลองใช้ Gemini กับงานจริงของตัวเองได้อย่างน้อย 1 งาน</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⏱ แผนการสอน 30 นาที</div>
+    <table class="schedule">
+      <tr><th style="width:80px;">เวลา</th><th style="width:160px;">หัวข้อ</th><th>รายละเอียด</th></tr>
+      <tr>
+        <td class="time">0–5 นาที</td>
+        <td class="topic">Gemini ใน Workspace</td>
+        <td class="detail">แผนที่ Gemini: Gmail / Docs / Sheets / Slides / Meet / Drive / NotebookLM</td>
+      </tr>
+      <tr>
+        <td class="time">5–12 นาที</td>
+        <td class="topic">เขียน Prompt ที่ดี</td>
+        <td class="detail">Pattern 4 ส่วน: ฉันคือ [บทบาท] / ต้องการ [output] / จากข้อมูล [input] / เงื่อนไข [constraint]</td>
+      </tr>
+      <tr>
+        <td class="time">12–20 นาที</td>
+        <td class="topic">ทดลองแต่ละ app</td>
+        <td class="detail">Gmail: draft email / Docs: สรุปเอกสาร / Sheets: ถามสูตร / Meet: transcript</td>
+      </tr>
+      <tr>
+        <td class="time">20–25 นาที</td>
+        <td class="topic">ข้อควรระวัง</td>
+        <td class="detail">ห้ามป้อน: เลขบัตร / ข้อมูลพนักงาน / เอกสารลับ — ตรวจผลลัพธ์ก่อนใช้เสมอ</td>
+      </tr>
+      <tr>
+        <td class="time">25–28 นาที</td>
+        <td class="topic">Mini challenge</td>
+        <td class="detail">แต่ละคนเลือก 1 งานและให้ Gemini ช่วย — แชร์ผลกัน 30 วินาที/คน</td>
+      </tr>
+      <tr>
+        <td class="time">28–30 นาที</td>
+        <td class="topic">สรุป</td>
+        <td class="detail">AI = ผู้ช่วย ไม่ใช่ผู้ตัดสิน — ตรวจทุกครั้งก่อนส่ง</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🧰 สิ่งที่ต้องเตรียม</div>
+    <ul class="materials">
+      <li>บัญชี Google Education Plus ที่เข้าถึง Gemini ได้ทุก app</li>
+      <li>งานจริง 1 อย่างที่แต่ละคนต้องการให้ AI ช่วย (คิดมาล่วงหน้า)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="ai-box">🤖 <b>Gemini.google.com:</b> ใช้ฟรีกับ Education Plus — ถามเป็นภาษาไทยได้ทุกอย่าง เช่น 'ช่วยร่างอีเมล์ขอเลื่อนประชุม' หรือ 'สรุประเบียบการลานี้เป็น 5 ข้อ'</div>
+  </div>
+
+  <div class="section" style="border-bottom:none;">
+    <div class="trainer-box">📌 <b>หมายเหตุผู้สอน:</b> ⚠️ ย้ำเสมอ: Gemini ที่อยู่ใน Workspace (Education Plus) มีนโยบายไม่นำข้อมูลไปเทรน AI — แต่ยังควรระวังข้อมูลลับขององค์กร เพราะนโยบายอาจเปลี่ยนได้</div>
+  </div>
+
+  <div class="footer-bar">S5 จาก 18 Sessions · Phase 1 · 16:00–16:30 น. · ศุกร์ 10 ก.ค. 2569</div>
+
+</div>
+</body>
+</html>
