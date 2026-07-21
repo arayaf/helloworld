@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S10 — Workspace Studio & Automation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Sarabun', 'Segoe UI', sans-serif; background: #f0f4f8; display: flex; justify-content: center; padding: 24px 16px; }
+  .doc { width: 210mm; max-width: 794px; background: white; box-shadow: 0 8px 40px rgba(0,0,0,0.15); }
+
+  /* Header */
+  .header { background: linear-gradient(135deg, #1e3a5f 0%, #1A56A0 60%, #2563eb 100%); padding: 32px 36px 24px; position: relative; overflow: hidden; }
+  .header::before { content:''; position:absolute; top:-40px; right:-40px; width:200px; height:200px; border-radius:50%; background:rgba(255,255,255,0.06); }
+  .tag { display:inline-block; background:rgba(255,255,255,0.15); color:#bfdbfe; font-size:11px; font-weight:600; padding:4px 12px; border-radius:20px; margin-bottom:12px; }
+  .header h1 { color:white; font-size:26px; font-weight:800; line-height:1.3; margin-bottom:10px; }
+  .meta { display:flex; gap:14px; flex-wrap:wrap; color:#bfdbfe; font-size:12px; }
+  .meta span { display:flex; align-items:center; gap:5px; }
+
+  /* Sections */
+  .section { padding: 20px 32px; border-bottom: 1px solid #f1f5f9; }
+  .section-title { font-size:15px; font-weight:800; color:#0f172a; margin-bottom:14px; }
+  .objective-box { background:#eff6ff; border-left:4px solid #1A56A0; border-radius:8px; padding:14px 18px; font-size:14px; color:#0f172a; font-weight:600; line-height:1.6; }
+
+  ul.outcomes { list-style:none; }
+  ul.outcomes li { position:relative; padding-left:24px; margin-bottom:8px; font-size:13px; color:#334155; line-height:1.6; }
+  ul.outcomes li::before { content:'✓'; position:absolute; left:0; color:#15803d; font-weight:800; }
+
+  /* Schedule table */
+  table.schedule { width:100%; border-collapse:collapse; font-size:12.5px; }
+  table.schedule th { background:#1e3a5f; color:white; text-align:left; padding:8px 12px; font-size:11px; font-weight:700; }
+  table.schedule td { padding:9px 12px; border-bottom:1px solid #e2e8f0; vertical-align:top; }
+  table.schedule tr:nth-child(even) td { background:#f8fafc; }
+  table.schedule td.time { font-weight:700; color:#475569; white-space:nowrap; width:80px; }
+  table.schedule td.topic { font-weight:700; color:#0f172a; width:150px; }
+  table.schedule td.detail { color:#475569; line-height:1.6; }
+
+  /* Workflow cards */
+  .workflow-grid { display:grid; grid-template-columns:1fr; gap:16px; }
+  .workflow-card { border-radius:12px; overflow:hidden; border:1px solid #e2e8f0; }
+  .workflow-header { padding:12px 18px; display:flex; align-items:center; gap:10px; }
+  .workflow-header .role-badge { font-size:10px; font-weight:700; padding:3px 10px; border-radius:20px; }
+  .workflow-header h3 { font-size:14px; font-weight:800; }
+  .workflow-body { padding:14px 18px; background:white; }
+  .workflow-body p { font-size:13px; color:#475569; margin-bottom:10px; line-height:1.6; }
+
+  /* Flow diagram */
+  .flow { display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin:12px 0; }
+  .flow-step { padding:7px 14px; border-radius:8px; font-size:12px; font-weight:700; text-align:center; }
+  .flow-arrow { font-size:16px; color:#94a3b8; }
+  .flow-note { font-size:11px; color:#64748b; margin-top:4px; }
+
+  /* Steps */
+  ol.steps { padding-left:20px; }
+  ol.steps li { font-size:13px; color:#334155; margin-bottom:6px; line-height:1.6; }
+  ol.steps li strong { color:#0f172a; }
+
+  /* Materials */
+  ul.materials { list-style:none; }
+  ul.materials li { position:relative; padding-left:22px; margin-bottom:6px; font-size:13px; color:#475569; line-height:1.6; }
+  ul.materials li::before { content:'•'; position:absolute; left:6px; color:#94a3b8; font-weight:800; }
+
+  .ai-box { background:#ede9fe; border-left:4px solid #7c3aed; border-radius:8px; padding:14px 18px; font-size:13px; color:#0f172a; line-height:1.6; }
+  .ai-box b { color:#5b21b6; }
+  .trainer-box { background:#fef9c3; border-left:4px solid #d97706; border-radius:8px; padding:14px 18px; font-size:13px; color:#0f172a; line-height:1.6; }
+  .trainer-box b { color:#a16207; }
+  .info-box { background:#f0fdf4; border-left:4px solid #15803d; border-radius:8px; padding:14px 18px; font-size:13px; color:#0f172a; line-height:1.6; margin-bottom:12px; }
+  .info-box b { color:#15803d; }
+  .warn-box { background:#fef9c3; border-left:4px solid #f59e0b; border-radius:8px; padding:10px 16px; font-size:12px; color:#78350f; line-height:1.6; margin-top:8px; }
+
+  .footer-bar { background:#1e3a5f; color:white; text-align:center; padding:12px 20px; font-size:12px; font-weight:700; }
+  .section-divider { height:4px; background:linear-gradient(90deg,#1A56A0,#15803d,#7c3aed); }
+  .phase-label { display:inline-block; padding:3px 12px; border-radius:20px; font-size:11px; font-weight:700; margin-bottom:6px; }
+
+  @media print { body { background:white; padding:0; } .doc { box-shadow:none; width:100%; max-width:100%; } }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="tag">🎓 Phase 2 · S10</div>
+    <h1>Workspace Studio & Automation 🤖</h1>
+    <div class="meta">
+      <span>📅 อังคาร 21 ก.ค. 2569</span>
+      <span>⏱ 30 นาที</span>
+      <span>🕓 16:00–16:30 น.</span>
+      <span>📍 ตึกอธิการบดี</span>
+    </div>
+  </div>
+
+  <!-- OBJECTIVE -->
+  <div class="section">
+    <div class="section-title">🎯 วัตถุประสงค์</div>
+    <div class="objective-box">
+      สร้าง automated workflow ด้วย Google Workspace Studio ได้โดยไม่ต้องเขียนโค้ด — เชื่อมต่อ Form, Sheets, Gmail, Calendar และ Drive เข้าหากัน เพื่อลดงานซ้ำ ๆ ในกระบวนงานธุรการจริง
+    </div>
+  </div>
+
+  <!-- OUTCOMES -->
+  <div class="section">
+    <div class="section-title">✅ ผลลัพธ์การเรียนรู้</div>
+    <ul class="outcomes">
+      <li>อธิบายได้ว่า Trigger คืออะไร และ Action คืออะไร</li>
+      <li>เข้าใช้ Google Workspace Studio และสร้าง workflow แรกได้</li>
+      <li>ประยุกต์ใช้ workflow กับกระบวนงานจริงในหน่วยงานตัวเองได้</li>
+      <li>รู้ความแตกต่างระหว่าง Workspace Studio (no-code) กับ Apps Script</li>
+    </ul>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- SCHEDULE -->
+  <div class="section">
+    <div class="section-title">⏱ แผนการสอน 30 นาที</div>
+    <table class="schedule">
+      <tr><th style="width:80px;">เวลา</th><th style="width:150px;">หัวข้อ</th><th>รายละเอียด</th></tr>
+      <tr>
+        <td class="time">0–5 นาที</td>
+        <td class="topic">Hook: งานอะไรทำซ้ำทุกสัปดาห์?</td>
+        <td class="detail">ถามกลุ่ม: "งานอะไรที่คุณทำซ้ำ ๆ ทุกสัปดาห์ที่อยากให้ระบบทำแทน?" — รวม 2-3 คำตอบ แล้วบอกว่าวันนี้จะสอนให้ทำได้จริง</td>
+      </tr>
+      <tr>
+        <td class="time">5–10 นาที</td>
+        <td class="topic">Workspace Studio คืออะไร</td>
+        <td class="detail">เปิด <strong>workspace.google.com/products/studio</strong> — ชี้ให้เห็น: Trigger (เมื่อ...) → Action (ทำ...) เปรียบกับ "ถ้า...แล้ว..." ในชีวิตจริง · ไม่ต้องเขียนโค้ด · ใช้งานได้ด้วย Education Plus</td>
+      </tr>
+      <tr>
+        <td class="time">10–18 นาที</td>
+        <td class="topic">Demo Workflow #1 สด</td>
+        <td class="detail">ผู้สอน demo: <strong>Form ถูกกรอก → ส่ง Email แจ้งอัตโนมัติ</strong><br>เลือก Trigger "Form submitted" → Action "Send email" → ใส่ recipient, subject, body → Save → ทดสอบกรอก Form สด</td>
+      </tr>
+      <tr>
+        <td class="time">18–24 นาที</td>
+        <td class="topic">แบ่งกลุ่มลองทำ</td>
+        <td class="detail">ผู้เรียนแต่ละคนเลือก workflow ที่ตรงกับงานตัวเอง (ดูหน้า 2-3) แล้วสร้างใน Studio — ผู้สอนเดินดูและช่วยเหลือ</td>
+      </tr>
+      <tr>
+        <td class="time">24–27 นาที</td>
+        <td class="topic">Demo Workflow #2 และ #3</td>
+        <td class="detail">ผู้สอน demo เร็ว ๆ: <strong>Sheet → Calendar event</strong> และ <strong>ไฟล์ใน Drive → แจ้งเตือน Chat</strong> (ไม่ต้องให้ผู้เรียนลองทำ เพื่อเห็นภาพ)</td>
+      </tr>
+      <tr>
+        <td class="time">27–30 นาที</td>
+        <td class="topic">Studio vs Script + สรุป</td>
+        <td class="detail">Studio = ไม่มีโค้ด เหมาะกับงานทั่วไป · Apps Script = เขียนโค้ด ยืดหยุ่นสูง · <em>"เริ่มจาก Studio ก่อน ถ้าทำไม่ได้ค่อยไป Script"</em> · Homework: สร้าง workflow ใหม่ 1 อันก่อน S11</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- WORKFLOW 1 -->
+  <div class="section">
+    <div class="section-title">🔧 Workflow #1 — งานแผนและงบประมาณ</div>
+    <div class="workflow-card">
+      <div class="workflow-header" style="background:#dbeafe;">
+        <span style="font-size:22px;">📊</span>
+        <div>
+          <div class="phase-label" style="background:#1A56A0;color:white;">นักวิเคราะห์นโยบายและแผน</div>
+          <h3 style="color:#1e3a5f;">รับแบบรายงานผลการดำเนินงาน → แจ้งหัวหน้าอัตโนมัติ</h3>
+        </div>
+      </div>
+      <div class="workflow-body" style="background:#eff6ff;">
+        <p><strong>ปัญหาเดิม:</strong> เมื่อหน่วยงานส่งรายงานผลงานประจำเดือนผ่าน Google Form เจ้าหน้าที่ต้องคอยเช็คเองว่ามีใครส่งมาบ้าง แล้วค่อยโทรแจ้งหัวหน้า — เสียเวลาและพลาดบ่อย</p>
+        <p><strong>Solution ด้วย Workspace Studio:</strong></p>
+        <div class="flow">
+          <div class="flow-step" style="background:#1A56A0;color:white;">📋 Form ถูกกรอก<br><small>รายงานผลงาน</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="background:#dbeafe;color:#1A56A0;">📊 Sheets<br><small>บันทึกข้อมูล</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="background:#1A56A0;color:white;">📧 Gmail<br><small>แจ้งหัวหน้าทันที</small></div>
+        </div>
+        <p><strong>ขั้นตอนสร้างใน Workspace Studio:</strong></p>
+        <ol class="steps">
+          <li><strong>Trigger:</strong> "When a form is submitted" → เลือก Form "แบบรายงานผลการดำเนินงาน"</li>
+          <li><strong>Action 1:</strong> "Send an email" → To: หัวหน้าฝ่ายแผนฯ</li>
+          <li><strong>Subject:</strong> "📊 มีรายงานใหม่จาก: {{หน่วยงาน}}"</li>
+          <li><strong>Body:</strong> "หน่วยงาน {{ชื่อหน่วยงาน}} ส่งรายงานผลงานเดือน {{เดือน}} แล้ว กรุณาตรวจสอบใน Sheets: {{link}}"</li>
+          <li><strong>ทดสอบ:</strong> กรอก Form ทดสอบ → ตรวจ Email ว่าส่งถึงหัวหน้าจริง</li>
+        </ol>
+        <div class="warn-box">⚠️ ผู้สอน: เตรียม Google Form "แบบรายงานผลงาน" ที่เชื่อม Sheets ไว้แล้วก่อนสอน (ต่อจาก S9)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKFLOW 2 -->
+  <div class="section">
+    <div class="section-title">🔧 Workflow #2 — งานบุคลากร (HRD)</div>
+    <div class="workflow-card">
+      <div class="workflow-header" style="background:#dcfce7;">
+        <span style="font-size:22px;">👥</span>
+        <div>
+          <div class="phase-label" style="background:#15803d;color:white;">เจ้าหน้าที่บุคลากร</div>
+          <h3 style="color:#14532d;">ลงทะเบียนอบรม → สร้าง Calendar event พร้อม invite อัตโนมัติ</h3>
+        </div>
+      </div>
+      <div class="workflow-body" style="background:#f0fdf4;">
+        <p><strong>ปัญหาเดิม:</strong> เมื่อมีผู้ลงทะเบียนอบรม เจ้าหน้าที่ต้องสร้าง Calendar invite ทีละคน ใส่ชื่อ-นามสกุล-อีเมล์เอง — ถ้าลงทะเบียน 20 คนก็ต้องทำ 20 ครั้ง</p>
+        <p><strong>Solution ด้วย Workspace Studio:</strong></p>
+        <div class="flow">
+          <div class="flow-step" style="background:#15803d;color:white;">📋 Form ลงทะเบียน<br><small>อบรม/สัมมนา</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="background:#dcfce7;color:#15803d;">📊 Sheets<br><small>รายชื่อผู้เข้าอบรม</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="background:#15803d;color:white;">📅 Calendar<br><small>สร้าง event + invite</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="background:#dcfce7;color:#15803d;">📧 Gmail<br><small>ยืนยันผู้เข้าร่วม</small></div>
+        </div>
+        <p><strong>ขั้นตอนสร้างใน Workspace Studio:</strong></p>
+        <ol class="steps">
+          <li><strong>Trigger:</strong> "When a form is submitted" → เลือก Form "ลงทะเบียนอบรม"</li>
+          <li><strong>Action 1:</strong> "Create a calendar event" → ชื่อ event: "อบรม: {{หัวข้อ}}" · วันที่: {{วันที่อบรม}} · ผู้เข้าร่วม: {{อีเมล์ผู้ลงทะเบียน}}</li>
+          <li><strong>Action 2:</strong> "Send an email" → To: {{อีเมล์ผู้ลงทะเบียน}} · Subject: "✅ ยืนยันการลงทะเบียนอบรม {{หัวข้อ}}"</li>
+          <li><strong>ทดสอบ:</strong> กรอก Form ด้วยอีเมล์ตัวเอง → ตรวจ Calendar และ Gmail</li>
+        </ol>
+        <div class="info-box"><b>💡 ประโยชน์จริง:</b> อบรมครั้งหนึ่งมีผู้ลงทะเบียน 30 คน → ประหยัดเวลาสร้าง invite ได้ 30 ครั้ง × 3 นาที = <strong>90 นาที/ครั้ง</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKFLOW 3 -->
+  <div class="section">
+    <div class="section-title">🔧 Workflow #3 — หอสมุด / นักสารสนเทศ</div>
+    <div class="workflow-card">
+      <div class="workflow-header" style="background:#ede9fe;">
+        <span style="font-size:22px;">📚</span>
+        <div>
+          <div class="phase-label" style="background:#5b21b6;color:white;">นักสารสนเทศ / บรรณารักษ์</div>
+          <h3 style="color:#3b0764;">ไฟล์รายงานใหม่ใน Drive → แจ้งทีมใน Google Chat อัตโนมัติ</h3>
+        </div>
+      </div>
+      <div class="workflow-body" style="background:#faf5ff;">
+        <p><strong>ปัญหาเดิม:</strong> เมื่อนักสารสนเทศอัปโหลดรายงานสถิติการใช้ห้องสมุด / รายการหนังสือใหม่ / รายงานประจำปีลง Google Drive ทีมอื่นไม่รู้ว่ามีไฟล์ใหม่ ต้องส่ง Line หรือ Email แจ้งเองทุกครั้ง</p>
+        <p><strong>Solution ด้วย Workspace Studio:</strong></p>
+        <div class="flow">
+          <div class="flow-step" style="background:#5b21b6;color:white;">📁 ไฟล์ใหม่<br><small>ใน Shared Drive</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="background:#5b21b6;color:white;">💬 Google Chat<br><small>แจ้ง Space ทีมห้องสมุด</small></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="background:#ede9fe;color:#5b21b6;">📧 Gmail<br><small>ส่งลิงก์ให้ผู้เกี่ยวข้อง</small></div>
+        </div>
+        <p><strong>ขั้นตอนสร้างใน Workspace Studio:</strong></p>
+        <ol class="steps">
+          <li><strong>Trigger:</strong> "When a file is added to Drive" → เลือกโฟลเดอร์ "รายงานห้องสมุด" ใน Shared Drive</li>
+          <li><strong>Action 1:</strong> "Send a Chat message" → เลือก Space "ทีมสารสนเทศ" · ข้อความ: "📄 ไฟล์ใหม่: {{ชื่อไฟล์}} — {{ลิงก์ไฟล์}}"</li>
+          <li><strong>Action 2 (optional):</strong> "Send an email" → ส่งให้ผู้บริหารสำนักวิทยบริการ พร้อมลิงก์ไฟล์</li>
+          <li><strong>ทดสอบ:</strong> อัปโหลดไฟล์ทดสอบเข้าโฟลเดอร์ → ตรวจ Chat Space และ Gmail</li>
+        </ol>
+        <div class="info-box"><b>💡 ต่อยอดได้:</b> ปรับ Trigger เป็น "ทุกวันจันทร์ 8.00 น." แทน → ส่งสรุปรายสัปดาห์อัตโนมัติโดยไม่ต้องรอมีไฟล์ใหม่</div>
+        <div class="warn-box">⚠️ ต้องมี Google Chat Space ของทีมห้องสมุดที่ตั้งไว้แล้ว — ถ้ายังไม่มีให้สร้างก่อนเริ่ม workshop</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- COMPARE TABLE -->
+  <div class="section">
+    <div class="section-title">⚖️ Workspace Studio vs Apps Script — เลือกใช้เมื่อไหร่?</div>
+    <table class="schedule">
+      <tr>
+        <th style="width:35%;">หัวข้อ</th>
+        <th style="width:32%;">🟢 Workspace Studio</th>
+        <th style="width:33%;">🟡 Apps Script</th>
+      </tr>
+      <tr>
+        <td style="font-weight:700;">ต้องเขียนโค้ดไหม</td>
+        <td style="color:#15803d;font-weight:700;">❌ ไม่ต้องเลย (No-code)</td>
+        <td style="color:#a16207;font-weight:700;">✅ ต้องเขียน JavaScript</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;">ความยืดหยุ่น</td>
+        <td>เลือกได้เฉพาะ trigger/action ที่มีในระบบ</td>
+        <td>ทำได้ทุกอย่างที่คิดออก</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;">เหมาะกับ</td>
+        <td>งานทั่วไปที่ trigger ตรงกับที่มีใน Studio</td>
+        <td>งานที่ต้องการ logic ซับซ้อน หรือ Studio ทำไม่ได้</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;">เวลาตั้งค่า</td>
+        <td>5–10 นาที</td>
+        <td>30 นาที – หลายชั่วโมง</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;">เรียนใน session</td>
+        <td style="color:#15803d;font-weight:700;">S10 (วันนี้)</td>
+        <td style="color:#a16207;font-weight:700;">S13–S16</td>
+      </tr>
+    </table>
+    <div class="warn-box" style="margin-top:12px;">📌 คำแนะนำ: <strong>เริ่มจาก Studio ก่อนเสมอ</strong> — ถ้า Studio ทำไม่ได้ค่อยไปเรียน Apps Script ใน S13</div>
+  </div>
+
+  <!-- MATERIALS -->
+  <div class="section">
+    <div class="section-title">🧰 สิ่งที่ต้องเตรียมก่อนสอน</div>
+    <ul class="materials">
+      <li>✅ บัญชี Google Education Plus ที่เข้า Workspace Studio ได้ — ทดสอบที่ <strong>workspace.google.com/products/studio</strong></li>
+      <li>✅ Google Form "แบบรายงานผลงาน" ที่เชื่อม Sheets ไว้แล้ว (ต่อจาก S9)</li>
+      <li>✅ Google Form "ลงทะเบียนอบรม" สำหรับ Workflow #2</li>
+      <li>✅ Shared Drive โฟลเดอร์ "รายงานห้องสมุด" และ Google Chat Space "ทีมสารสนเทศ"</li>
+      <li>✅ ทดสอบ demo workflow #1 บนบัญชีตัวเองก่อนสอน — Studio อาจมี UI อัปเดตบ่อย</li>
+      <li>✅ เปิดหน้า Workspace Studio ทิ้งไว้ในเบราว์เซอร์ก่อนสอน</li>
+    </ul>
+  </div>
+
+  <!-- AI TIP -->
+  <div class="section">
+    <div class="ai-box">🤖 <b>Workspace Studio:</b> ถ้า trigger หรือ action ที่ต้องการไม่มีใน Studio — บอกผู้เรียนว่า "เราจะเรียนวิธีทำด้วย Apps Script ใน S13–S16 ค่ะ/ครับ" อย่าพยายาม workaround ใน Studio เพราะจะซับซ้อนเกิน 30 นาที</div>
+  </div>
+
+  <!-- TRAINER NOTE -->
+  <div class="section" style="border-bottom:none;">
+    <div class="trainer-box">📌 <b>หมายเหตุผู้สอน:</b> ผู้เรียนในกลุ่มนี้มาจาก 3 หน่วยงาน (งานแผน, งาน กจ./บุคลากร, หอสมุด) — ให้แต่ละคนเลือกลองทำ workflow ที่ตรงกับงานตัวเองในช่วง 18–24 นาที ไม่ต้องทำทั้ง 3 workflow ทุกคน ผู้สอนเดินดูและช่วยตามที่แต่ละคนเลือก</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-bar">S10 จาก 18 Sessions · Phase 2 · 16:00–16:30 น. · อังคาร 21 ก.ค. 2569</div>
+
+</div>
+</body>
+</html>

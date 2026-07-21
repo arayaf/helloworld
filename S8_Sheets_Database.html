@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S8 — Sheets เป็น Database 🔑</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Sarabun', 'Segoe UI', sans-serif; background: #f0f4f8; display: flex; justify-content: center; padding: 24px 16px; }
+  .doc { width: 210mm; max-width: 794px; background: white; box-shadow: 0 8px 40px rgba(0,0,0,0.15); }
+  .header { background: linear-gradient(135deg, #1e3a5f 0%, #15803d 60%, #16a34a 100%); padding: 32px 36px 24px; position: relative; overflow: hidden; }
+  .header::before { content:''; position:absolute; top:-40px; right:-40px; width:200px; height:200px; border-radius:50%; background:rgba(255,255,255,0.06); }
+  .tag { display:inline-block; background:rgba(255,255,255,0.15); color:#bbf7d0; font-size:11px; font-weight:600; padding:4px 12px; border-radius:20px; margin-bottom:12px; }
+  .header h1 { color:white; font-size:26px; font-weight:800; line-height:1.3; margin-bottom:10px; }
+  .meta { display:flex; gap:14px; flex-wrap:wrap; color:#bbf7d0; font-size:12px; }
+  .section { padding: 20px 32px; border-bottom: 1px solid #f1f5f9; }
+  .section-title { font-size:15px; font-weight:800; color:#0f172a; margin-bottom:14px; }
+  .objective-box { background:#f0fdf4; border-left:4px solid #15803d; border-radius:8px; padding:14px 18px; font-size:14px; color:#0f172a; font-weight:600; line-height:1.6; }
+  ul.outcomes { list-style:none; }
+  ul.outcomes li { position:relative; padding-left:24px; margin-bottom:8px; font-size:13px; color:#334155; line-height:1.6; }
+  ul.outcomes li::before { content:'✓'; position:absolute; left:0; color:#15803d; font-weight:800; }
+  table.schedule { width:100%; border-collapse:collapse; font-size:12.5px; }
+  table.schedule th { background:#1e3a5f; color:white; text-align:left; padding:8px 12px; font-size:11px; font-weight:700; }
+  table.schedule td { padding:9px 12px; border-bottom:1px solid #e2e8f0; vertical-align:top; }
+  table.schedule tr:nth-child(even) td { background:#f8fafc; }
+  table.schedule td.time { font-weight:700; color:#475569; white-space:nowrap; width:80px; }
+  table.schedule td.topic { font-weight:700; color:#0f172a; width:150px; }
+  table.schedule td.detail { color:#475569; line-height:1.6; }
+  ul.materials { list-style:none; }
+  ul.materials li { position:relative; padding-left:22px; margin-bottom:6px; font-size:13px; color:#475569; line-height:1.6; }
+  ul.materials li::before { content:'•'; position:absolute; left:6px; color:#94a3b8; font-weight:800; }
+  .ai-box { background:#ede9fe; border-left:4px solid #7c3aed; border-radius:8px; padding:14px 18px; font-size:13px; color:#0f172a; line-height:1.6; }
+  .ai-box b { color:#5b21b6; }
+  .trainer-box { background:#fef9c3; border-left:4px solid #d97706; border-radius:8px; padding:14px 18px; font-size:13px; color:#0f172a; line-height:1.6; }
+  .trainer-box b { color:#a16207; }
+  .key-box { background:#f0fdf4; border-left:6px solid #15803d; border-radius:8px; padding:16px 18px; font-size:13px; color:#0f172a; line-height:1.8; }
+  .key-box b { color:#15803d; }
+  .red-box { background:#fef2f2; border-left:4px solid #dc2626; border-radius:8px; padding:12px 18px; font-size:13px; color:#0f172a; line-height:1.6; margin-bottom:10px; }
+  .red-box b { color:#dc2626; }
+  .green-box { background:#f0fdf4; border-radius:8px; padding:12px 18px; font-size:13px; color:#0f172a; line-height:1.6; border:1px solid #bbf7d0; }
+  .green-box b { color:#15803d; }
+  .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+  .footer-bar { background:#1e3a5f; color:white; text-align:center; padding:12px 20px; font-size:12px; font-weight:700; }
+  @media print { body { background:white; padding:0; } .doc { box-shadow:none; width:100%; max-width:100%; } }
+</style>
+</head>
+<body>
+<div class="doc">
+  <div class="header">
+    <div class="tag">🎓 Phase 2 · S8</div>
+    <h1>Sheets เป็น Database 🔑</h1>
+    <div class="meta">
+      <span>📅 พุธ 22 ก.ค. 2569</span>
+      <span>⏱ 30 นาที</span>
+      <span>🕓 16:00–16:30 น.</span>
+      <span>📍 ตึกอธิการบดี</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🎯 วัตถุประสงค์</div>
+    <div class="objective-box">ออกแบบ Google Sheets ให้เป็น "ฐานข้อมูล" ที่ถูกต้อง — ใช้งาน VLOOKUP ได้ เชื่อมกับ Forms ได้ และต่อยอดไปยัง Apps Script ได้ในอนาคต</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">✅ ผลลัพธ์การเรียนรู้</div>
+    <ul class="outcomes">
+      <li>อธิบายได้ว่า "ฐานข้อมูล" ต่างจาก "ตารางทั่วไป" อย่างไร</li>
+      <li>ออกแบบ Sheet ตาม 4 กฎหลักของ Database ได้</li>
+      <li>แก้ไขตารางที่ผิดโครงสร้างให้ถูกต้องได้</li>
+      <li>ใช้ Gemini ช่วย design โครงสร้างตารางจาก use case ได้</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🔑 4 กฎหลักของ Sheets Database</div>
+    <div class="key-box">
+      <b>กฎที่ 1: 1 แถว = 1 รายการ (1 row = 1 record)</b><br>
+      แต่ละแถวเก็บข้อมูล 1 รายการเท่านั้น ห้ามรวมหลายรายการในแถวเดียว<br><br>
+      <b>กฎที่ 2: ไม่ Merge cell ในพื้นที่ข้อมูล</b><br>
+      Merge cell ทำให้ VLOOKUP, Filter และ Apps Script ทำงานผิดพลาด<br><br>
+      <b>กฎที่ 3: Header row ชั้นเดียว ชัดเจน ไม่มีแถวว่าง</b><br>
+      ชื่อ header ต้องไม่ซ้ำกัน และต้องอยู่ในแถวที่ 1 หรือ 2 เท่านั้น<br><br>
+      <b>กฎที่ 4: มี Primary Key — ID ที่ไม่ซ้ำกัน</b><br>
+      ทุก record ต้องมีรหัสเฉพาะ เช่น DOC001, EMP003 เพื่อใช้ใน VLOOKUP
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">❌ vs ✅ ตัวอย่างตารางผิด-ถูก</div>
+    <div class="compare-grid">
+      <div class="red-box">
+        <b>❌ ตารางผิด (ที่พบบ่อย)</b><br>
+        • Merge cell ที่ชื่อแผนก<br>
+        • Header 2 ชั้น (หัวข้อใหญ่-เล็ก)<br>
+        • 1 แถวมีหลายรายการ<br>
+        • ไม่มี ID/รหัส<br>
+        • มีแถวว่างกลางข้อมูล<br>
+        • รวม "หมายเหตุ" ไว้ท้าย sheet
+      </div>
+      <div class="green-box">
+        <b>✅ ตารางถูก (Database style)</b><br>
+        • ไม่ merge cell เลยในพื้นที่ข้อมูล<br>
+        • Header 1 ชั้น ชัดเจน<br>
+        • 1 แถว = 1 รายการเสมอ<br>
+        • คอลัมน์แรกคือ ID ที่ไม่ซ้ำ<br>
+        • ไม่มีแถวว่างกลางข้อมูล<br>
+        • หมายเหตุอยู่ในคอลัมน์ของตัวเอง
+      </div>
+    </div>
+    <p style="font-size:12px;color:#475569;margin-top:4px;">💡 เปิดไฟล์ <strong>S8_Workshop_Before_After.xlsx</strong> แล้วให้ผู้เรียนแก้ Sheet "ก่อน" ให้เป็นแบบ Sheet "หลัง"</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⏱ แผนการสอน 30 นาที</div>
+    <table class="schedule">
+      <tr><th style="width:80px;">เวลา</th><th style="width:150px;">หัวข้อ</th><th>รายละเอียด</th></tr>
+      <tr>
+        <td class="time">0–6 นาที</td>
+        <td class="topic">ตารางผิดกับถูก</td>
+        <td class="detail">เปิดไฟล์ S8 Sheet "ก่อน" — ถามว่า "ตารางนี้มีปัญหาอะไร?" รวมคำตอบจากกลุ่ม แล้วเฉลยด้วย 4 กฎหลัก</td>
+      </tr>
+      <tr>
+        <td class="time">6–12 นาที</td>
+        <td class="topic">4 กฎหลัก + demo</td>
+        <td class="detail">อธิบาย 4 กฎพร้อม demo ใน Sheet "หลัง" ที่เตรียมไว้ — ชี้ให้เห็นว่า VLOOKUP ใช้ได้ทันทีเมื่อโครงสร้างถูกต้อง</td>
+      </tr>
+      <tr>
+        <td class="time">12–22 นาที</td>
+        <td class="topic">ฝึกปฏิบัติ</td>
+        <td class="detail">ผู้เรียนเปิด Sheet "ก่อน" แล้วแก้ให้ถูกตาม 4 กฎ — ผู้สอนเดินดู ชี้จุดที่ผิดโดยไม่บอกคำตอบทันที</td>
+      </tr>
+      <tr>
+        <td class="time">22–27 นาที</td>
+        <td class="topic">Gemini design ตาราง</td>
+        <td class="detail">เปิด Gemini แล้วพิมพ์: "ฉันต้องการ Sheets สำหรับติดตามการยืม-คืนครุภัณฑ์ ช่วย design คอลัมน์ให้หน่อย" — ดูผลลัพธ์และปรับร่วมกัน</td>
+      </tr>
+      <tr>
+        <td class="time">27–30 นาที</td>
+        <td class="topic">สรุป + เชื่อมต่อ</td>
+        <td class="detail">🔑 S8 เป็น foundation ของทุกอย่างที่จะตามมา — S9 (Forms เชื่อม Sheet), S10 (Automation), S13-16 (Apps Script)</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🧰 สิ่งที่ต้องเตรียม</div>
+    <ul class="materials">
+      <li>ไฟล์ <strong>S8_Workshop_Before_After.xlsx</strong> — เปิดแชร์ให้ผู้เรียนทุกคนก่อนสอน (หรืออัปโหลดไว้ใน Shared Drive)</li>
+      <li>Google Sheets เปล่าสำหรับให้ผู้เรียน design ตารางของตัวเอง</li>
+      <li>Gemini เปิดพร้อมที่ gemini.google.com</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="ai-box">🤖 <b>Gemini prompt ตัวอย่าง:</b> "ฉันเป็นเจ้าหน้าที่พัสดุ ต้องการ Google Sheets สำหรับติดตามการยืม-คืนครุภัณฑ์ ควรมี column อะไรบ้าง และ column ไหนควรเป็น Primary Key?"</div>
+  </div>
+
+  <div class="section" style="border-bottom:none;">
+    <div class="trainer-box">📌 <b>หมายเหตุผู้สอน:</b> S8 คือ session ที่สำคัญที่สุดใน Phase 2 — ถ้าผู้เรียนไม่เข้าใจ database concept ที่นี่ จะมีปัญหากับ Apps Script ใน Phase 3 อย่างแน่นอน ควรใช้เวลากับช่วง "แก้ตารางผิด" มากกว่าที่กำหนด ถ้าจำเป็น</div>
+  </div>
+
+  <div class="footer-bar">S8 จาก 18 Sessions · Phase 2 · 16:00–16:30 น. · พุธ 22 ก.ค. 2569</div>
+</div>
+</body>
+</html>
